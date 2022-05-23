@@ -5,4 +5,6 @@
     <string name="error_message">Something went wrong, please try again later</string>
     <string name="no_internet_connection">No internet connection available</string>
     <string name="you_are_back_online">You are back online!</string>
+    <string name="pr_number">PR: #%1$s</string>
+    <string name="closed_on">Closed on: %1$s</string>
 </resources>

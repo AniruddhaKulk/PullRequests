@@ -1,5 +1,6 @@
 package com.ani.kulk.pullrequests.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,8 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.ani.kulk.pullrequests.R
 import com.ani.kulk.pullrequests.databinding.FragmentClosedPullRequestsListBinding
 import com.ani.kulk.pullrequests.utils.NetworkListener
+import com.ani.kulk.pullrequests.utils.VerticalDividerDecoration
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ClosedPullRequestsListFragment : Fragment() {
@@ -38,9 +42,11 @@ class ClosedPullRequestsListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        binding.fragmentClosedPullRequestRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = ClosedPullRequestAdapter(mutableListOf())
+        binding.fragmentClosedPullRequestRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext())
+        adapter = ClosedPullRequestAdapter(requireContext(), mutableListOf())
         binding.fragmentClosedPullRequestRecyclerView.adapter = adapter
+        binding.fragmentClosedPullRequestRecyclerView.addItemDecoration(VerticalDividerDecoration(requireContext().getDrawable(R.drawable.divider_vertical_decorator)!!))
     }
 
     private fun setupObservers() {
@@ -69,19 +75,24 @@ class ClosedPullRequestsListFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             networkListener = NetworkListener()
-            networkListener.checkNetworkAvailability(requireContext()).collect { isConnectionAvailable ->
-                if (!isConnectionAvailable) {
-                    binding.fragmentClosedPullRequestConnectionStatusTextView.visibility = View.VISIBLE
-                } else if (isConnectionAvailable) {
-                    binding.fragmentClosedPullRequestConnectionStatusTextView.visibility = View.GONE
+            networkListener.checkNetworkAvailability(requireContext())
+                .collect { isConnectionAvailable ->
+                    if (!isConnectionAvailable) {
+                        binding.fragmentClosedPullRequestConnectionStatusTextView.visibility =
+                            View.VISIBLE
+                    } else if (isConnectionAvailable) {
+                        binding.fragmentClosedPullRequestConnectionStatusTextView.visibility =
+                            View.GONE
+                    }
                 }
-            }
         }
     }
 
     private fun handleErrorAndListViewVisibility(isError: Boolean) {
-        binding.fragmentClosedPullRequestErrorTextView.visibility = if (isError) View.VISIBLE else View.GONE
-        binding.fragmentClosedPullRequestRecyclerView.visibility = if (isError) View.GONE else View.VISIBLE
+        binding.fragmentClosedPullRequestErrorTextView.visibility =
+            if (isError) View.VISIBLE else View.GONE
+        binding.fragmentClosedPullRequestRecyclerView.visibility =
+            if (isError) View.GONE else View.VISIBLE
     }
 
     override fun onDestroyView() {
