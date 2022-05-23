@@ -1,7 +1,8 @@
-package com.ani.kulk.pullrequests
+package com.ani.kulk.pullrequests.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.ani.kulk.pullrequests.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
