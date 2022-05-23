@@ -1,7 +1,6 @@
 package com.ani.kulk.pullrequests.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ani.kulk.pullrequests.databinding.FragmentClosedPullRequestsListBinding
+import com.ani.kulk.pullrequests.utils.NetworkListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ClosedPullRequestsListFragment : Fragment() {
@@ -17,6 +17,7 @@ class ClosedPullRequestsListFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: ClosedPullRequestsListViewModel by viewModel()
     private lateinit var adapter: ClosedPullRequestAdapter
+    private lateinit var networkListener: NetworkListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +31,10 @@ class ClosedPullRequestsListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         setupObservers()
+        binding.fragmentClosedPullRequestSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.getClosedPullRequests()
+            binding.fragmentClosedPullRequestSwipeRefreshLayout.isRefreshing = false
+        }
     }
 
     private fun setupRecyclerView() {
@@ -43,26 +48,40 @@ class ClosedPullRequestsListFragment : Fragment() {
             viewModel.closedPullRequestsViewState.collect {
                 when (it) {
                     is ClosedPullRequestsViewState.Loading -> {
-                        Log.d("TAG", "Show loader")
                         binding.fragmentClosedPullRequestProgressBar.visibility = View.VISIBLE
                     }
                     is ClosedPullRequestsViewState.Success -> {
-                        Log.d("TAG", "SUCCESS ${it.list}")
                         binding.fragmentClosedPullRequestProgressBar.visibility = View.GONE
                         if (it.list.isNullOrEmpty()) {
-                            binding.fragmentClosedPullRequestRecyclerView.visibility = View.GONE
+                            handleErrorAndListViewVisibility(isError = true)
                         } else {
-                            binding.fragmentClosedPullRequestRecyclerView.visibility = View.VISIBLE
+                            handleErrorAndListViewVisibility(isError = false)
                             adapter.setItems(it.list)
                         }
                     }
                     is ClosedPullRequestsViewState.Error -> {
-                        Log.d("TAG", "ERROR ${it.message}")
                         binding.fragmentClosedPullRequestProgressBar.visibility = View.GONE
+                        handleErrorAndListViewVisibility(isError = true)
                     }
                 }
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            networkListener = NetworkListener()
+            networkListener.checkNetworkAvailability(requireContext()).collect { isConnectionAvailable ->
+                if (!isConnectionAvailable) {
+                    binding.fragmentClosedPullRequestConnectionStatusTextView.visibility = View.VISIBLE
+                } else if (isConnectionAvailable) {
+                    binding.fragmentClosedPullRequestConnectionStatusTextView.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    private fun handleErrorAndListViewVisibility(isError: Boolean) {
+        binding.fragmentClosedPullRequestErrorTextView.visibility = if (isError) View.VISIBLE else View.GONE
+        binding.fragmentClosedPullRequestRecyclerView.visibility = if (isError) View.GONE else View.VISIBLE
     }
 
     override fun onDestroyView() {

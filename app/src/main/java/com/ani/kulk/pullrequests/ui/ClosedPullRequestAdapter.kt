@@ -28,7 +28,6 @@ class ClosedPullRequestAdapter(private val closedPullRequestList: MutableList<Pu
         holder.binding.itemUserNameTextView.text = item.user.login
         holder.binding.itemPullRequestTitleTextView.text = item.title
         holder.binding.itemPullRequestClosedOnTextView.text = DateDisplayUtils.getDayMonthYearFormattedDate(item.closed_at)
-        holder.binding.itemPullRequestCreatedOnTextView.text = DateDisplayUtils.getDayMonthYearFormattedDate(item.created_at)
         holder.binding.itemPullRequestNumberTextView.text = item.number.toString()
         Glide.with(holder.binding.itemUserImageView.context).load(item.user.avatar_url)
             .into(holder.binding.itemUserImageView)

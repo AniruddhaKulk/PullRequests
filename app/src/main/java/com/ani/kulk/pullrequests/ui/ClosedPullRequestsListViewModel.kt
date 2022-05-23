@@ -37,8 +37,7 @@ class ClosedPullRequestsListViewModel(
         }
     }
 
-
-    private fun getClosedPullRequests() {
+    fun getClosedPullRequests() {
         viewModelScope.launch(Dispatchers.IO) {
             closedPullRequestUseCase.getClosedPullRequests()
         }
