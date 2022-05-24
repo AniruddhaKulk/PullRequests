@@ -1,6 +1,5 @@
 package com.ani.kulk.pullrequests.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.ani.kulk.pullrequests.R
 import com.ani.kulk.pullrequests.databinding.FragmentClosedPullRequestsListBinding
 import com.ani.kulk.pullrequests.utils.NetworkListener
