@@ -30,7 +30,7 @@ class ClosedPullRequestAdapter(private val context: Context, private val closedP
         holder.binding.itemUserNameTextView.text = item.user.login
         holder.binding.itemPullRequestTitleTextView.text = item.title
         holder.binding.itemPullRequestClosedOnTextView.text = context.getString(R.string.closed_on, DateDisplayUtils.getDayMonthYearFormattedDate(item.closed_at))
-        holder.binding.itemPullRequestNumberTextView.text = context.getString(R.string.pr_number, item.number.toString())
+        holder.binding.itemPullRequestNumberTextView.text = context.getString(R.string.pr_number_created_on, item.number.toString(), DateDisplayUtils.getDayMonthYearFormattedDate(item.created_at))
         Glide.with(holder.binding.itemUserImageView.context).load(item.user.avatar_url)
             .into(holder.binding.itemUserImageView)
     }

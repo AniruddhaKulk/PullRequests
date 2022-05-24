@@ -13,7 +13,7 @@
         android:layout_height="16dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="4dp"
-        app:layout_constraintTop_toBottomOf="@id/itemPullRequestTitleTextView"
+        app:layout_constraintTop_toBottomOf="@id/itemPullRequestNumberTextView"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -33,14 +33,12 @@
         android:id="@+id/itemPullRequestNumberTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="4dp"
         android:maxLines="1"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:textColor="@color/descriptionColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/itemPullRequestImageView"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/itemPullRequestTitleTextView"
         tools:text="PR:#12345" />
 
     <ImageView
@@ -49,18 +47,19 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_git_merge"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/itemPullRequestTitleTextView"
+        app:layout_constraintTop_toTopOf="@id/itemPullRequestTitleTextView" />
 
     <TextView
         android:id="@+id/itemPullRequestTitleTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:textColor="@color/titleColor"
         android:textSize="16sp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintStart_toEndOf="@id/itemPullRequestImageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/itemPullRequestNumberTextView"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="[Ticket-1212] Fix minor bug" />
 
     <TextView
